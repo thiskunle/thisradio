@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ThisRadio: real conversations, tough questions, different perspectives</title>
+    <meta
+      name="description"
+      content="ThisRadio brings technology, business, humour, and tough questions into one conversation. Serious when it counts, funny when it fits, and never afraid to ask the difficult questions."
+    />
+    <meta name="theme-color" content="#1f1bb8" />
+    <link rel="icon" href="./icon-32.png" type="image/png" sizes="32x32" />
+    <link rel="apple-touch-icon" href="./icon-180.png" />
+    <script type="module" src="/src/main.ts"></script>
+  </head>
+  <body>
+    <a class="skip" href="#show">Skip to the show</a>
+    <canvas id="stage" aria-hidden="true"></canvas>
+
+    <main>
+      <section class="hero" data-station="hero">
+        <h1 class="wordmark" data-wordmark><span class="logo" role="img" aria-label="ThisRadio, where music unites"></span></h1>
+        <p class="hero-line">Real conversations. Tough questions. Different perspectives.</p>
+        <div class="hero-side">
+          <a class="listen listen--small" href="https://open.spotify.com/show/3pjs6oIWUip55j9qgRL3yg" target="_blank" rel="noopener">Listen on Spotify</a>
+          <p class="hero-hint">Scroll to tune in</p>
+        </div>
+      </section>
+
+      <section class="panel panel--left panel--intro" id="show" data-station="show">
+        <div class="copy">
+          <h2 class="big">Technology meets business, serious conversations meet comic relief, and no question is too uncomfortable to ask.</h2>
+          <p>Engaging discussions with guests from different backgrounds, exploring technology, entrepreneurship, innovation, everyday experiences, and the issues shaping our world.</p>
+        </div>
+      </section>
+
+      <section class="episode-title" aria-labelledby="episode-heading">
+        <h2 id="episode-heading" class="big">What an episode sounds like</h2>
+      </section>
+
+      <ol class="stations">
+        <li class="panel panel--right" id="opening" data-station="opening">
+          <div class="copy">
+            <p class="when">Part 1, 2 minutes</p>
+            <h3 class="big">Opening</h3>
+            <p>We introduce the topic and the guest.</p>
+          </div>
+        </li>
+        <li class="panel panel--top" id="conversation" data-station="conversation">
+          <div class="copy">
+            <p class="when">Part 2, 10–15 minutes</p>
+            <h3 class="big">The Conversation</h3>
+            <p>We explore the guest's background and experiences. Their personal stories get room to breathe.</p>
+          </div>
+        </li>
+        <li class="panel panel--right" id="tech" data-station="tech">
+          <div class="copy">
+            <p class="when">Part 3, 10–15 minutes</p>
+            <h3 class="big">Tech Meets Business</h3>
+            <p>We get into technology, business, and current ideas, from emerging tools to the decisions behind them.</p>
+          </div>
+        </li>
+        <li class="panel panel--left" id="hot-seat" data-station="hot-seat">
+          <div class="copy">
+            <p class="when">Part 4, 10 minutes</p>
+            <h3 class="big">The Hot Seat</h3>
+            <p>We ask the questions people often avoid and challenge assumptions, with challenging or unexpected questions.</p>
+          </div>
+        </li>
+        <li class="panel panel--right" id="comic-relief" data-station="comic-relief">
+          <div class="copy">
+            <p class="when">Part 5, 5 minutes</p>
+            <h3 class="big">Comic Relief</h3>
+            <p>Humour, quick-fire questions, and funny experiences. Serious when it counts, funny when it fits.</p>
+          </div>
+        </li>
+        <li class="panel panel--left" id="final-word" data-station="final-word">
+          <div class="copy">
+            <p class="when">Part 6, 3 minutes</p>
+            <h3 class="big">Final Word</h3>
+            <p>The guest shares one final thought.</p>
+          </div>
+        </li>
+      </ol>
+
+      <section class="closing" id="closing" data-station="closing">
+        <h2 class="big">No scripted answers. No unnecessary filters. Just conversations worth having.</h2>
+        <dl class="facts">
+          <div><dt>Topics</dt><dd>Technology and business</dd></div>
+          <div><dt>Format</dt><dd>Host-led interviews and guest conversations</dd></div>
+          <div><dt>Style</dt><dd>Conversational, humorous, direct</dd></div>
+          <div><dt>Length</dt><dd>30–60 minutes</dd></div>
+          <div><dt>New episodes</dt><dd>Weekly</dd></div>
+          <div><dt>Language</dt><dd>English</dd></div>
+        </dl>
+        <a class="listen" href="https://open.spotify.com/show/3pjs6oIWUip55j9qgRL3yg" target="_blank" rel="noopener">Listen on Spotify</a>
+        <p class="sign-off">ThisRadio. Different voices. Real conversations. Tough questions.</p>
+      </section>
+    </main>
+
+    <nav class="tuner" aria-label="Tune to a part of the show">
+      <p class="tuner-now" data-now aria-live="off">ThisRadio</p>
+      <div class="tuner-scale">
+        <span class="tuner-needle" data-needle aria-hidden="true"></span>
+        <a href="#opening" data-tune="opening"><span>Opening</span></a>
+        <a href="#conversation" data-tune="conversation"><span>The Conversation</span></a>
+        <a href="#tech" data-tune="tech"><span>Tech Meets Business</span></a>
+        <a href="#hot-seat" data-tune="hot-seat"><span>The Hot Seat</span></a>
+        <a href="#comic-relief" data-tune="comic-relief"><span>Comic Relief</span></a>
+        <a href="#final-word" data-tune="final-word"><span>Final Word</span></a>
+      </div>
+      <button class="static" type="button" data-static aria-pressed="false">Turn on static</button>
+    </nav>
+  </body>
+</html>
