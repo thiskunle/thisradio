@@ -15,6 +15,8 @@ const scale = document.querySelector<HTMLElement>(".tuner-scale")!;
 const tuneLinks = [...document.querySelectorAll<HTMLAnchorElement>("[data-tune]")];
 const staticBtn = document.querySelector<HTMLButtonElement>("[data-static]")!;
 
+/** Index of Opening, the first of the six parts shown on the dial. */
+const FIRST_PART = stations.findIndex((s) => s.id === "opening");
 const sections = stations.map((s) => document.querySelector<HTMLElement>(`[data-station="${s.id}"]`)!);
 /** Scroll position at which each station is fully tuned in. */
 let stops: number[] = [];
@@ -85,8 +87,8 @@ function frame(ms: number) {
     root.style.setProperty("--fg", nearest.fg);
   }
 
-  // Needle on the dial: stations 2 to 7 (the six parts) sit at the centres of the six slots.
-  const dial = Math.min(1, Math.max(0, (pos - 2 + 0.5) / 6));
+  // Needle on the dial: the six parts of the show sit at the centres of the six slots.
+  const dial = Math.min(1, Math.max(0, (pos - FIRST_PART + 0.5) / 6));
   needle.style.transform = `translateX(${dial * scale.clientWidth}px)`;
 
   if (nearest.name !== lastNow) {
@@ -135,6 +137,21 @@ staticBtn.addEventListener("click", async () => {
   staticBtn.setAttribute("aria-pressed", String(on));
   staticBtn.textContent = on ? "Turn off static" : "Turn on static";
 });
+
+// Host video: always muted (sound is off for now), plays while on screen, pauses off screen,
+// and stays on its still frame for reduced motion.
+const hostVideo = document.querySelector<HTMLVideoElement>("[data-host-video]")!;
+let hostVisible = false;
+function syncHost() {
+  const play = hostVisible && !reduced.matches;
+  if (play && hostVideo.paused) hostVideo.play().catch(() => {});
+  if (!play && !hostVideo.paused) hostVideo.pause();
+}
+new IntersectionObserver(([entry]) => {
+  hostVisible = entry.isIntersecting;
+  syncHost();
+}, { threshold: 0.25 }).observe(hostVideo);
+reduced.addEventListener("change", syncHost);
 
 window.addEventListener("scroll", request, { passive: true });
 window.addEventListener("resize", () => {

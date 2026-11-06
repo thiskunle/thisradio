@@ -140,6 +140,31 @@ body {
 }
 .panel--top .copy p { margin-inline: auto; }
 .panel--intro .copy { width: min(44rem, 52vw); }
+
+/* Host: portrait video on the right, the radio turns towards it from the left. */
+.panel--host .copy {
+  top: max(1.5rem, 8svh);
+  width: min(24rem, 40vw);
+}
+.host-video {
+  position: relative;
+  width: fit-content;
+  max-width: 100%;
+  margin: 1.5rem 0 0;
+}
+/* Sized by the height left under the heading, so it never runs under the dial. */
+.host-video video {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: min(calc(100svh - var(--tuner-h) - 17.5rem), 42rem);
+  aspect-ratio: 9 / 16;
+  object-fit: cover;
+  border-radius: 1.25rem;
+  background: #160c33;
+  box-shadow: 0 1.5rem 3rem rgb(10 4 30 / 0.45);
+}
+
 .panel p { margin: 1.25rem 0 0; max-width: 34em; }
 .panel .when { margin: 0 0 0.75rem; font-weight: 600; }
 
@@ -303,6 +328,13 @@ body {
   .panel--right,
   .panel--top { justify-content: flex-start; }
   .panel--top .copy { top: 48svh; text-align: left; }
+  /* The video needs the room, so it takes the screen and the radio sits behind the heading. */
+  .panel--host .copy { top: 1rem; width: 100%; }
+  .host-video { width: 100%; margin-top: 1rem; }
+  .host-video video {
+    width: 100%;
+    height: calc(100svh - var(--tuner-h) - 6.5rem);
+  }
   .panel--top .copy p { margin-inline: 0; }
   .closing .big { max-width: none; }
   .big { font-size: clamp(1.875rem, 8.2vw, 2.75rem); }
