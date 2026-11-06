@@ -4,6 +4,7 @@ import "./styles.css";
 import { blendPose, stations, type Pose } from "./stations";
 import { createStatic } from "./static";
 import type { Scene } from "./scene";
+import { mountListening } from "./audio/ui";
 
 const root = document.documentElement;
 const reduced = matchMedia("(prefers-reduced-motion: reduce)");
@@ -162,6 +163,7 @@ window.addEventListener("resize", () => {
 reduced.addEventListener("change", request);
 document.addEventListener("visibilitychange", request);
 
+mountListening();
 measure();
 document.fonts?.ready.then(() => {
   measure();

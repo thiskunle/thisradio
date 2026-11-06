@@ -43,6 +43,7 @@ export const stations: Station[] = [
   { ...base, id: "hero", name: "ThisRadio", bg: "#1f1bb8", fg: CREAM, x: 2.15, turn: -0.5, tilt: 0.02, y: -0.35, scale: 0.95, dist: 11 },
   { ...base, id: "show", name: "ThisRadio", bg: "#1f1bb8", fg: CREAM, x: 2.15, turn: -0.85, dist: 8.6, camY: 1.5 },
   { ...base, id: "host", name: "Your host", bg: "#3a1a66", fg: CREAM, x: -1.5, turn: 0.45, scale: 0.9, dist: 9.8, camY: 0.9, voice: 0.6 },
+  { ...base, id: "listen", name: "The Playlist", bg: "#160c33", fg: CREAM, x: 2.35, y: -0.2, turn: -0.65, scale: 0.85, dist: 9.6, camY: 1.1, voice: 0.8 },
   { ...base, id: "opening", name: "Opening", bg: "#ff9ebb", fg: INK, x: -2, turn: 0.32, dist: 8.2, voice: 1 },
   { ...base, id: "conversation", name: "The Conversation", bg: "#0b5b4c", fg: CREAM, x: 2, y: -0.7, turn: -0.3, dist: 9.6, camY: 0.9, voice: 1, guest: 1 },
   { ...base, id: "tech", name: "Tech Meets Business", bg: INK, fg: CREAM, x: -2, turn: Math.PI - 0.42, dist: 8, camY: 1, valves: 1 },

@@ -1,0 +1,631 @@
+/* Listen section and floating player. Uses the site's fonts, colours and pill buttons. */
+:root {
+  --ink: #160c33;
+  --cream: #fff4dc;
+  --sun: #ffc91f;
+  --signal: #ff4b2e;
+  --line: rgb(255 244 220 / 0.16);
+  --card: rgb(22 12 51 / 0.82);
+}
+
+/* ---------- Listen section ---------- */
+.listen-section {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  min-height: 150svh;
+  padding: 20svh var(--gutter) 30svh;
+}
+.listen-inner {
+  width: min(42rem, 54vw);
+}
+.listen-heading { text-transform: uppercase; }
+.listen-sub {
+  margin: 1rem 0 0;
+  font-size: clamp(1.125rem, 1rem + 0.5vw, 1.5rem);
+}
+
+.modes {
+  display: inline-flex;
+  gap: 0.25rem;
+  margin: 2rem 0 1.25rem;
+  padding: 0.3rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgb(22 12 51 / 0.6);
+}
+/* Without JavaScript all three panels show, so the tabs only appear once they work. */
+.listen-section:not(.is-ready) .modes { display: none; }
+.mode-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 44px;
+  padding: 0 1.15rem;
+  border: 0;
+  border-radius: 999px;
+  background: none;
+  color: var(--cream);
+  font: inherit;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+.mode-tab:hover { background: rgb(255 244 220 / 0.1); }
+.mode-tab[aria-selected="true"] { background: var(--cream); color: var(--ink); }
+.soon {
+  padding: 0.1rem 0.45rem;
+  border-radius: 999px;
+  background: var(--sun);
+  color: var(--ink);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.mode-panel { animation: mode-in 0.35s ease both; }
+.mode-panel + .mode-panel { margin-top: 1.5rem; }
+.listen-section.is-ready .mode-panel + .mode-panel { margin-top: 0; }
+@keyframes mode-in {
+  from { opacity: 0; transform: translateY(0.5rem); }
+}
+
+/* Space is held at the player's height, so nothing jumps when it loads. */
+.spotify-slot {
+  position: relative;
+  min-height: var(--embed-h, 352px);
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 1.25rem;
+  background: var(--ink);
+  box-shadow: 0 1.5rem 3rem rgb(10 4 30 / 0.45);
+}
+.spotify-slot iframe {
+  display: block;
+  width: 100%;
+  border: 0;
+  /* Spotify's own rounded corners sit inside ours. */
+  border-radius: 12px;
+}
+.spotify-wait {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  margin: 0;
+  font-size: 0.9375rem;
+  opacity: 0.7;
+}
+.spotify-slot[data-state="ready"] .spotify-wait { display: none; }
+
+.mode-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem 1.5rem;
+  margin-top: 1rem;
+}
+.mode-note {
+  flex: 1 1 16rem;
+  margin: 0;
+  font-size: 0.875rem;
+  opacity: 0.8;
+}
+.mode-title {
+  margin: 0;
+  font-family: var(--display);
+  font-size: clamp(1.5rem, 1.2rem + 1vw, 2.25rem);
+  font-stretch: 75%;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.empty-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: clamp(1.25rem, 3vw, 2rem);
+  border: 1px solid var(--line);
+  border-radius: 1.25rem;
+  background: var(--card);
+}
+.empty-card p { margin: 0; max-width: 34em; }
+.listen[disabled] {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+.listen[disabled]:hover { background: var(--fg); color: var(--bg); }
+
+/* Hosted music list (appears once library.ts has tracks). */
+.track-box { margin-top: 2rem; }
+.track-list {
+  display: grid;
+  gap: 0.5rem;
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+.track {
+  display: grid;
+  grid-template-columns: 3.5rem 1fr auto 2.75rem;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  padding: 0.5rem 0.75rem 0.5rem 0.5rem;
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: var(--card);
+  color: var(--cream);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+.track:hover,
+.track.is-current { border-color: var(--sun); }
+.track-art,
+.episode-art,
+.dock-art {
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  aspect-ratio: 1;
+  border-radius: 0.65rem;
+  background: #2a1a5e;
+  color: var(--sun);
+}
+.track-art img,
+.episode-art img,
+.dock-art img { width: 100%; height: 100%; object-fit: cover; }
+.track-text { display: grid; min-width: 0; }
+.track-title { font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.track-sub,
+.track-len { font-size: 0.875rem; opacity: 0.75; }
+.track-state {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  background: var(--cream);
+  color: var(--ink);
+}
+.track-state svg { width: 1.1rem; height: 1.1rem; }
+.track-state .waves { display: none; }
+.is-playing .track-state .waves {
+  position: absolute;
+  inset: auto 0 -0.9rem;
+  display: flex;
+  justify-content: center;
+  height: 0.6rem;
+}
+
+/* Podcasts (appear once library.ts has episodes). */
+.episodes {
+  display: grid;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.episode {
+  display: grid;
+  grid-template-columns: 7.5rem 1fr;
+  gap: 1.25rem;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: 1.25rem;
+  background: var(--card);
+}
+.episode.episode--embed { grid-template-columns: 1fr; }
+.spotify-slot--episode { margin-top: 1rem; border-radius: 12px; box-shadow: none; }
+.episode-meta,
+.episode-guest { margin: 0; font-size: 0.875rem; opacity: 0.8; }
+.ep-title {
+  margin: 0.25rem 0;
+  font-family: var(--display);
+  font-size: 1.5rem;
+  font-stretch: 75%;
+  font-weight: 800;
+  line-height: 1.05;
+}
+.episode-desc { margin: 0.5rem 0 0; font-size: 0.9375rem; }
+.episode-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+.play-pill,
+.pill-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  padding: 0 1rem 0 0.35rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: none;
+  color: var(--cream);
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+.pill-link { padding: 0 1rem; }
+.pill-link svg { width: 1rem; height: 1rem; }
+.play-pill .track-state { width: 2.1rem; height: 2.1rem; }
+.play-pill:hover,
+.pill-link:hover { border-color: var(--sun); color: var(--sun); }
+
+/* Live. */
+.live-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  background: rgb(255 244 220 / 0.12);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.live-badge .dot {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  background: rgb(255 244 220 / 0.5);
+}
+.live-card[data-status="soon"] .live-badge { background: var(--sun); color: var(--ink); }
+.live-card[data-status="soon"] .live-badge .dot { background: var(--ink); }
+.live-card[data-status="live"] .live-badge { background: var(--signal); color: #fff; }
+.live-card[data-status="live"] .live-badge .dot { background: #fff; animation: on-air 1.4s ease-in-out infinite; }
+.live-card[data-status="connecting"] .dot,
+.live-card[data-status="reconnecting"] .dot { background: var(--sun); animation: on-air 0.8s ease-in-out infinite; }
+@keyframes on-air { 50% { opacity: 0.25; } }
+.live-status { font-size: 0.9375rem; opacity: 0.85; }
+.live-now { font-weight: 700; }
+.live-now:empty { display: none; }
+.live-play { display: inline-flex; align-items: center; gap: 0.5rem; border: 0; font: inherit; font-weight: 700; cursor: pointer; }
+.live-play svg { width: 1.1rem; height: 1.1rem; }
+
+/* ---------- Sound waves ---------- */
+.waves {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 0.9rem;
+}
+.waves i {
+  width: 3px;
+  height: 100%;
+  border-radius: 2px;
+  background: currentColor;
+  transform: scaleY(var(--rest, 0.4));
+  transform-origin: bottom;
+}
+/* At rest the bars hold a level-meter shape, so the icon still reads as sound. */
+.waves i:nth-child(1) { --rest: 0.45; }
+.waves i:nth-child(2) { --rest: 0.8; }
+.waves i:nth-child(3) { --rest: 0.55; }
+.waves i:nth-child(4) { --rest: 1; }
+.is-playing .waves i,
+.dock-spotify .waves i { animation: wave 0.9s ease-in-out infinite; }
+.waves i:nth-child(2) { animation-delay: -0.45s !important; }
+.waves i:nth-child(3) { animation-delay: -0.2s !important; }
+.waves i:nth-child(4) { animation-delay: -0.65s !important; }
+@keyframes wave {
+  0%, 100% { transform: scaleY(0.25); }
+  50% { transform: scaleY(1); }
+}
+
+/* ---------- Dial: the button that opens the player ---------- */
+.tuner-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.dock-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  min-height: 44px;
+  padding: 0 1rem;
+  border: 0;
+  border-radius: 999px;
+  background: var(--cream);
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.2s, transform 0.2s;
+}
+.dock-toggle:hover { background: var(--sun); }
+.dock-toggle[aria-expanded="true"] { background: var(--sun); }
+.dock-toggle.is-playing .waves { color: var(--signal); }
+
+/* ---------- Floating player ---------- */
+.dock {
+  position: fixed;
+  z-index: 11;
+  right: max(var(--gutter), env(safe-area-inset-right));
+  bottom: calc(var(--tuner-h) + 0.75rem);
+  width: min(23rem, calc(100vw - 2rem));
+  max-height: calc(100svh - var(--tuner-h) - 1.5rem);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: 1.25rem;
+  background: var(--ink);
+  color: var(--cream);
+  box-shadow: 0 1.5rem 3rem rgb(10 4 30 / 0.55);
+  font-size: 0.9375rem;
+  /* Closed: out of sight, out of the tab order. */
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(0.75rem) scale(0.97);
+  transform-origin: 100% 100%;
+  transition: opacity 0.22s ease, transform 0.22s ease, visibility 0s linear 0.22s;
+}
+.dock[data-open] {
+  visibility: visible;
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.22s ease, transform 0.22s ease;
+}
+.dock p { margin: 0; }
+.dock [hidden] { display: none !important; }
+.dock-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: -0.25rem -0.25rem 0.75rem 0;
+}
+.dock-label {
+  font-family: var(--display);
+  font-stretch: 75%;
+  font-weight: 800;
+  font-size: 1.125rem;
+}
+.dock-now {
+  display: grid;
+  grid-template-columns: 4rem 1fr;
+  align-items: center;
+  gap: 0.85rem;
+}
+.dock-meta { min-width: 0; }
+.dock-title { font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dock-sub { font-size: 0.875rem; opacity: 0.75; }
+.dock-progress { margin-top: 0.85rem; }
+.dock-times {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.7;
+}
+.dock-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  margin-top: 0.35rem;
+}
+.dock-volume {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+.dock-volume input { flex: 1; }
+.dock-error {
+  margin-top: 0.75rem !important;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.65rem;
+  background: rgb(255 75 46 / 0.2);
+  font-size: 0.875rem;
+}
+.dock-empty { opacity: 0.75; }
+.dock-spotify {
+  display: grid;
+  gap: 0.5rem;
+  justify-items: start;
+  padding: 0.75rem;
+  border-radius: 0.85rem;
+  background: rgb(255 244 220 / 0.08);
+}
+.dock-spotify-head { display: inline-flex; align-items: center; gap: 0.5rem; font-weight: 700; color: var(--sun); }
+.dock-sources {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.4rem;
+  margin-top: 1rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--line);
+}
+.dock-sources-label { grid-column: 1 / -1; font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.7; }
+.source {
+  display: grid;
+  gap: 0.1rem;
+  min-height: 44px;
+  padding: 0.5rem 0.6rem;
+  border: 1px solid var(--line);
+  border-radius: 0.75rem;
+  background: none;
+  color: inherit;
+  font: inherit;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+.source small { font-weight: 400; opacity: 0.7; }
+.source:hover { border-color: var(--sun); color: var(--sun); }
+
+.icon-btn {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s, transform 0.15s;
+}
+.icon-btn svg { width: 1.25rem; height: 1.25rem; }
+.icon-btn:hover { background: rgb(255 244 220 / 0.1); color: var(--sun); }
+.icon-btn:active { transform: scale(0.94); }
+.icon-btn--main { width: 52px; height: 52px; background: var(--cream); color: var(--ink); }
+.icon-btn--main:hover { background: var(--sun); color: var(--ink); }
+.icon-btn--main svg { width: 1.4rem; height: 1.4rem; }
+.icon-btn--main.is-loading { animation: on-air 1s ease-in-out infinite; }
+.icon-btn--small { width: 40px; height: 40px; }
+.icon-btn[aria-pressed="false"],
+.icon-btn[data-repeat="off"] { opacity: 0.55; }
+.icon-btn[aria-pressed="true"],
+.icon-btn[data-repeat="all"],
+.icon-btn[data-repeat="one"] { color: var(--sun); opacity: 1; }
+.repeat-one {
+  position: absolute;
+  top: 8px;
+  right: 6px;
+  display: none;
+  font-size: 0.625rem;
+  font-weight: 800;
+}
+[data-repeat="one"] .repeat-one { display: block; }
+.text-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-height: 40px;
+  padding: 0 0.85rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: none;
+  color: inherit;
+  font: inherit;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.text-btn svg { width: 0.9rem; height: 0.9rem; }
+.text-btn:hover { border-color: var(--sun); color: var(--sun); }
+
+/* Range sliders: a cream track that fills in sun-yellow. */
+.dock input[type="range"] {
+  width: 100%;
+  height: 24px;
+  margin: 0;
+  background: none;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+}
+.dock input[type="range"]:disabled { cursor: default; opacity: 0.5; }
+.dock input[type="range"]::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--sun) var(--pct, 0%), rgb(255 244 220 / 0.25) var(--pct, 0%));
+}
+.dock input[type="range"]::-moz-range-track {
+  height: 4px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--sun) var(--pct, 0%), rgb(255 244 220 / 0.25) var(--pct, 0%));
+}
+.dock input[type="range"]::-webkit-slider-thumb {
+  width: 14px;
+  height: 14px;
+  margin-top: -5px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--cream);
+  -webkit-appearance: none;
+}
+.dock input[type="range"]::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--cream);
+}
+
+/* ---------- Tablets: the extra button leaves no room for six names on the dial ---------- */
+@media (min-width: 761px) and (max-width: 1023px) {
+  .tuner { grid-template-columns: 9rem 1fr auto; }
+  .tuner-scale a span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+}
+
+/* ---------- Portrait screens (phones and upright tablets) ---------- */
+/* The scene puts the radio in the top half here, so the player sits on a card below it. */
+@media (max-width: 760px), (max-aspect-ratio: 1/1) {
+  .listen-section {
+    min-height: 0;
+    padding: 50svh var(--gutter) 25svh;
+  }
+  .listen-inner {
+    width: calc(100% + var(--gutter));
+    max-width: 44rem;
+    margin-inline: calc(var(--gutter) * -0.5);
+    padding: clamp(1.25rem, 3vw, 2rem);
+    border-radius: 1.25rem;
+    background: rgb(22 12 51 / 0.9);
+  }
+}
+
+/* ---------- Small screens ---------- */
+@media (max-width: 760px) {
+  .modes { display: flex; }
+  .mode-tab { flex: 1; justify-content: center; padding: 0 0.5rem; }
+  .episode { grid-template-columns: 4.5rem 1fr; gap: 0.85rem; }
+  .track { grid-template-columns: 3rem 1fr 2.75rem; }
+  .track-len { display: none; }
+
+  .tuner-actions { gap: 0.4rem; }
+  .dock-toggle { min-height: 32px; padding: 0 0.75rem; font-size: 0.8125rem; }
+  .dock {
+    right: 0.75rem;
+    left: 0.75rem;
+    width: auto;
+  }
+}
+@media (max-width: 380px) {
+  /* Very narrow phones: the static button shortens so everything fits on one row. */
+  .static { font-size: 0 !important; padding: 0 0.6rem !important; }
+  .static::after { content: "Static"; font-size: 0.75rem; }
+  .static[aria-pressed="true"]::after { content: "Static on"; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mode-panel { animation: none; }
+  .waves i,
+  .live-badge .dot,
+  .icon-btn--main.is-loading { animation: none !important; }
+  .dock,
+  .dock[data-open] { transform: none; transition: opacity 0.01s, visibility 0s; }
+}

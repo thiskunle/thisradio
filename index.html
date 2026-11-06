@@ -52,6 +52,57 @@
         </div>
       </section>
 
+      <section class="listen-section" id="listen" data-station="listen" aria-labelledby="listen-heading">
+        <div class="listen-inner">
+          <h2 id="listen-heading" class="big listen-heading">The ThisRadio Playlist</h2>
+          <p class="listen-sub">Good conversations deserve good music.</p>
+
+          <div class="modes" role="tablist" aria-label="What to listen to">
+            <button class="mode-tab" type="button" role="tab" id="tab-music" data-mode="music" aria-controls="mode-music" aria-selected="true">Music</button>
+            <button class="mode-tab" type="button" role="tab" id="tab-podcasts" data-mode="podcasts" aria-controls="mode-podcasts" aria-selected="false" tabindex="-1">Podcasts</button>
+            <button class="mode-tab" type="button" role="tab" id="tab-live" data-mode="live" aria-controls="mode-live" aria-selected="false" tabindex="-1">Live <span class="soon" data-live-soon>Soon</span></button>
+          </div>
+
+          <div class="mode-panel" id="mode-music" role="tabpanel" aria-labelledby="tab-music">
+            <div class="spotify-slot" data-spotify>
+              <p class="spotify-wait">Loading the Spotify player…</p>
+              <noscript>
+                <iframe title="The ThisRadio playlist on Spotify" src="https://open.spotify.com/embed/playlist/3snc02m8rXgsk12gtqYf0D?utm_source=generator&amp;theme=0" width="100%" height="352" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+              </noscript>
+            </div>
+            <div class="mode-foot">
+              <p class="mode-note">Signed in to Spotify in this browser? You'll hear full tracks. Otherwise Spotify plays short previews.</p>
+              <a class="listen listen--small" href="https://open.spotify.com/playlist/3snc02m8rXgsk12gtqYf0D" target="_blank" rel="noopener">Open in Spotify</a>
+            </div>
+            <div class="track-box" data-tracks hidden>
+              <h3 class="mode-title">From the ThisRadio library</h3>
+              <ul class="track-list"></ul>
+            </div>
+          </div>
+
+          <div class="mode-panel" id="mode-podcasts" role="tabpanel" aria-labelledby="tab-podcasts">
+            <div data-episodes>
+              <div class="empty-card">
+                <h3 class="mode-title">ThisRadio podcasts</h3>
+                <p>Episodes will appear here once they're published. Follow the show on Spotify to hear each one as it comes out.</p>
+                <a class="listen listen--small" href="https://open.spotify.com/show/3pJs6OIWUip55J9qgRL3yG" target="_blank" rel="noopener">Follow on Spotify</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="mode-panel" id="mode-live" role="tabpanel" aria-labelledby="tab-live">
+            <div data-live>
+              <div class="empty-card live-card" data-status="soon">
+                <p class="live-badge"><span class="dot" aria-hidden="true"></span>Coming soon</p>
+                <h3 class="mode-title">ThisRadio Live</h3>
+                <p>Live internet radio from ThisRadio is coming. Once the stream is on air, you'll be able to tune in right here.</p>
+                <button class="listen listen--small" type="button" disabled>Play live</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section class="episode-title" aria-labelledby="episode-heading">
         <h2 id="episode-heading" class="big">What an episode sounds like</h2>
       </section>
@@ -127,7 +178,13 @@
         <a href="#comic-relief" data-tune="comic-relief"><span>Comic Relief</span></a>
         <a href="#final-word" data-tune="final-word"><span>Final Word</span></a>
       </div>
-      <button class="static" type="button" data-static aria-pressed="false">Turn on static</button>
+      <div class="tuner-actions">
+        <button class="dock-toggle" type="button" data-dock-toggle aria-expanded="false" aria-controls="dock" aria-label="Open the player">
+          <span class="waves" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span data-dock-toggle-label>Listen</span>
+        </button>
+        <button class="static" type="button" data-static aria-pressed="false">Turn on static</button>
+      </div>
     </nav>
+    <section class="dock" id="dock" aria-labelledby="dock-label"></section>
   </body>
 </html>
